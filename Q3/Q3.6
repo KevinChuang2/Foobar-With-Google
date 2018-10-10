@@ -1,0 +1,44 @@
+# I want to point out that my friend got this question, and I heard about it from him before i requested this.
+# I didn't use his solution, this one is purely my own. But, I did get some extra time to think about
+# the question beforehand. I also didn't help him with his solution, I was just curious because I find the questions
+# interesting, and I thought we would get unique questions :( my bad
+
+# typically we want to get rid of groups of 1's by adding one, and then dividing by 2 the rest of the way
+# the idea is that we want as many groups of 0's in binary to divide out the fastest.
+def answer(n):
+    count = 0
+    n = int(n)
+    while n != 1:
+        # account for the case with only two digits. In this case, we don't want to get rid of a group of 1's.
+        # case: 11, we would typically do 100 and then go down, but its faster to go to 10 and then divide.
+        # this is the only case, only because we want to keep ONE 1.
+        if n < 4:
+            if n % 2 == 1:
+                n = n - 1
+            else:
+                n = n >> 1
+        # general case
+        else:
+            # when the digit is a 1, we need to know whether to subtract or add 1.
+            if n % 2 == 1:
+                # in the case where the digit before is also a 1, for example 11011,
+                # adding is always faster because we get rid of multiple 1's.
+                if (n >> 1) % 2 == 1:
+                    n = n + 1
+                # in the case where the digit before is a 0, for example 11001:
+                # it's faster to subtract because then we can divide the rest out.
+                else:
+                    n = n - 1
+            # if its a 0, just divide out by 2
+            else:
+                n = n >> 1
+        count = count + 1
+    return count
+
+def main():
+    #print(bin(10**309))
+    #print(bin(10^309))
+    print(answer('4'))
+
+if __name__ == "__main__":
+    main()
